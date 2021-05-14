@@ -1,0 +1,7 @@
+.Main_Landing {
+  width: 95%;
+  display: flex;
+  margin: 0 auto;
+  display: flex;
+  justify-content: space-between;
+}

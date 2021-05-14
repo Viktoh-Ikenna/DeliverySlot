@@ -1,0 +1,111 @@
+#cus_table {
+  font-family: Arial, Helvetica, sans-serif;
+  border-collapse: collapse;
+  width: 100%;
+  max-height: 75%;
+}
+
+#cus_table td,
+#cus_table th {
+  border: 1px solid #ddd;
+}
+#cus_table td {
+  color: rgb(84, 87, 87);
+}
+#cus_table tr {
+  height: 50px;
+}
+#cus_table tr:nth-child(even) {
+  background-color: #f2f2f2;
+}
+#cus_table td:first-child {
+  background-color: #111111;
+  color: white;
+}
+
+#cus_table tr:hover {
+  background-color: #ddd;
+}
+
+#cus_table th {
+  padding-top: 12px;
+  padding-bottom: 12px;
+  text-align: left;
+  background-color: #111111;
+  color: rgb(126, 122, 122);
+  padding: 8px;
+}
+
+.Main {
+  display: flex;
+  flex-direction: column;
+  width: 40%;
+  justify-content: space-between;
+  align-items: center;
+  box-shadow: rgb(139, 136, 136) 0px 0px 5px 1px;
+  height: 520px;
+}
+::-webkit-scrollbar {
+  height: 5px;
+  background: rgb(246, 247, 248);
+  cursor: pointer;
+}
+::-webkit-scrollbar-thumb {
+  background: rgb(6, 33, 58);
+  border-radius: 10px;
+  cursor: pointer;
+}
+.Main .pagination {
+  width: 90%;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  margin: 15px auto;
+  box-shadow: rgb(223, 216, 216) 0px 0px 10px 3px;
+
+  padding: 5px 0;
+}
+.Main .pagination .arrCont {
+  width: 40%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.Main .pagination .arrCont div {
+  text-align: center;
+}
+.Main .pagination .arrCont .arrow {
+  font-size: 30px;
+  cursor: pointer;
+  padding: 0 20px;
+  display: flex;
+  align-items: center;
+  border-radius: 4px;
+}
+.Main .pagination .arrow:hover {
+  transition: all 0.3s linear;
+  background-color: rgb(48, 45, 45);
+  color: rgb(182, 179, 176);
+}
+.disabled {
+  background-color: #8d8b8bb7;
+  color: #f0dfdf;
+  padding: 0 10px;
+}
+.disabled:hover {
+  background-color: #8d8b8bb7;
+  color: #f0dfdf;
+  opacity: 0.5;
+}
+.dragging {
+  opacity: 0.3;
+  cursor: move;
+}
+.hold {
+  width: 100%;
+  overflow-x: scroll;
+  overflow-y: hidden;
+  box-shadow: rgb(219, 217, 216) 0px 0px 10px 3px;
+  height: 90%;
+
+}
