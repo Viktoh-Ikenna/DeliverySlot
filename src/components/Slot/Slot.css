@@ -18,9 +18,13 @@
 #Slot_table td:first-child {
   background-color: #f2f2f2;
 }
+#Slot_table td:first-child:hover {
+  background-color: #f2f2f2;
+}
 #Slot_table td:first-child::after,
 #Slot_table td:first-child::before {
   display: none;
+  cursor:pointer
 }
 
 
