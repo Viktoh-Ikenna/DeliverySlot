@@ -13,8 +13,8 @@ the operator will be able to drag a customer and fix them in an available slot i
 ![shots](./shots/shot3.png)
 
 
-**all this will be stored in the database on each drop:**
+**All this will be stored in the database on each drop:**
 
-### the date updates 7days ahead.
+### The date updates 7days ahead.
 
 ##### To run the project, you just have to download or fork the project, after that, run npm start to open the project in your local machine.
