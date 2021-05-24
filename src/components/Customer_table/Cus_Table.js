@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from "react";
+import axios from "axios";
 import "./Cus_Table.css";
+import { Action } from "../Actions";
 import {
   HiOutlineArrowNarrowLeft,
   HiOutlineArrowNarrowRight,
@@ -11,12 +13,30 @@ export const CusTable = (props) => {
 
   /* the state 'page handles the pagination button' */ 
   const [page, setpage] = useState(1);
+  const [total,setTotal]= useState(1);
+
+  
+
+  // calling to the database
+
+  useEffect(() => {
+    (async () => {
+      try {
+        const data = await axios.get(`http://localhost:3200/api/customers?page=${page}&limit=8`);
+        const response = await data.data;
+        setTotal(response.TotalDb);
+        props.Fetch(response.data);
+      } catch (err) {
+        console.log(err);
+      }
+    })();
+  }, [page,props.slots]);
 
   /* This adds transitions to clickable and unclickable pageBtn */ 
   useEffect(() => {
     if (page < 2) {
       document.querySelector(".arrow:first-child").classList.add("disabled");
-    } else if (page >= Math.ceil(props.customer.length / 8)) {
+    } else if (page >= Math.ceil(total/ 8)) {
       document.querySelector(".arrow:last-child").classList.add("disabled");
     } else {
       document.querySelector(".arrow:last-child").classList.remove("disabled");
@@ -24,10 +44,9 @@ export const CusTable = (props) => {
     }
   }, [page]);
 
-
   const paginRight = () => {
     setpage((prev) => {
-      if (prev >= Math.ceil(props.customer.length / 8)) return prev;
+      if (prev >= Math.ceil(total/ 8)) return prev;
       else {
         return prev + 1;
       }
@@ -42,7 +61,6 @@ export const CusTable = (props) => {
       }
     });
   };
-
 
   /* This handles onDragStart and onDragEnd */ 
   const started = (e) => {
@@ -68,10 +86,6 @@ export const CusTable = (props) => {
             </thead>
             <tbody>
               {props.customer
-                .filter((e, i) => i < page * 8)
-                .filter((e, i) =>
-                  page === 1 ? i > -1 : i > (page - 1) * 8 - 1
-                )
                 .map((e, i) => {
                   return (
                     <tr
@@ -93,7 +107,9 @@ export const CusTable = (props) => {
           </table>
         </div>
       ) : (
-        "loading..."
+        <div className='loader'>
+          <div></div>
+        </div>
       )}
       <div className="pagination">
         <div className="arrCont">
@@ -101,7 +117,7 @@ export const CusTable = (props) => {
             <HiOutlineArrowNarrowLeft onClick={paginLeft} />
           </div>
           <div>
-            {page}/{Math.ceil(props.customer.length / 8)}
+            {page}/{Math.ceil(total/ 8)}
           </div>
           <div className="arrow" onClick={paginRight}>
             <HiOutlineArrowNarrowRight />
@@ -116,6 +132,15 @@ export const CusTable = (props) => {
 const mapStateToProps = (state) => {
   return {
     customer: state.customer,
+    slots: state.slot,
   };
 };
-export default connect(mapStateToProps)(CusTable);
+const setter = (dispatch) => {
+  return {
+    Fetch: (load) => {
+      dispatch({ type: Action.server, payload: load });
+    },
+  };
+};
+
+export default connect(mapStateToProps,setter)(CusTable);

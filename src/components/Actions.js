@@ -3,5 +3,6 @@ export const Action={
     slot:'slot',
     remove:'remove',
     reserve:'reserve',
-    Rserver:'Rserver'
+    Rserver:'Rserver',
+    dataBase:'db'
 }

@@ -7,13 +7,13 @@ import { Provider } from "react-redux";
 import thunk from "redux-thunk";
 import { date } from "./components/dateManger";
 const dat = [
-  { date: date(0), s1: "", s2: "", s3: "", s4: "" },
-  { date: date(1), s1: "", s2: "", s3: "", s4: "" },
-  { date: date(2), s1: "", s2: "", s3: "", s4: "" },
-  { date: date(3), s1: "", s2: "", s3: "", s4: "" },
-  { date: date(4), s1: "", s2: "", s3: "", s4: "" },
-  { date: date(5), s1: "", s2: "", s3: "", s4: "" },
-  { date: date(6), s1: "", s2: "", s3: "", s4: "" },
+  { date: date(0), slot_1: "", slot_2: "", slot_3: "", slot_4: "" },
+  { date: date(1), slot_1: "", slot_2: "", slot_3: "", slot_4: "" },
+  { date: date(2), slot_1: "", slot_2: "", slot_3: "", slot_4: "" },
+  { date: date(3), slot_1: "", slot_2: "", slot_3: "", slot_4: "" },
+  { date: date(4), slot_1: "", slot_2: "", slot_3: "", slot_4: "" },
+  { date: date(5), slot_1: "", slot_2: "", slot_3: "", slot_4: "" },
+  { date: date(6), slot_1: "", slot_2: "", slot_3: "", slot_4: "" },
 ];
 
 const Mybaba = (state = [], action) => {
@@ -47,6 +47,17 @@ const SlotReducer = (state = dat, action) => {
           return d;
         }),
       ];
+      case "db":
+        return [
+          ...state.map((d, i) => {
+            if (d.date === action.payload.date) {
+              let dd = action.payload.slotId;
+              let captured = { ...d, [dd]: action.payload.Slot };
+              return captured;
+            }
+            return d;
+          }),
+        ];
     default:
       return state;
   }

@@ -107,5 +107,36 @@
   overflow-y: hidden;
   box-shadow: rgb(219, 217, 216) 0px 0px 10px 3px;
   height: 90%;
+}
+.loader {
+  background-color: #ddd;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.loader div {
+  border: 10px solid;
+  border-radius: 50px;
+  height: 70px;
+  width: 70px;
+  animation:load .5s linear infinite;
+}
 
+@keyframes load{
+  0%{
+   border-top-color: blueviolet;
+  }
+  30%{
+    border-left-color: blueviolet;
+  }
+  60%{
+    border-bottom-color: blueviolet;
+  }
+  80%{
+    border-right-color: blueviolet;
+  }100%{
+    border-top-color: blueviolet;
+  }
 }

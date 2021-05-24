@@ -3,9 +3,76 @@ import "./Slot.css";
 import { connect } from "react-redux";
 import { HiOutlineArrowNarrowLeft } from "react-icons/hi";
 import { Action } from "../Actions";
+import axios from "axios";
 
 export const Slot = (props) => {
-  const [content, setContent] = useState("hii");
+
+
+  //handling database crud operation
+  const settledStore = (data) => {
+    const [filtered] = props.customer.filter((e) => e["Cus_Id"] === data);
+    axios
+      .post("http://localhost:3200/api/settled", filtered)
+      .then(() => {});
+
+  };
+
+  const slotStore = (date, slot, data) => {
+    axios
+      .patch(`http://localhost:3200/api/slots/${date}`, { [slot]: data })
+      .then((res) =>{});
+  };
+
+  const clearCustomer = (data) => {
+    const [filtered] = props.customer.filter((e) => e["Cus_Id"] === data);
+    axios
+    .delete(`http://localhost:3200/api/customers/${filtered._id}`)
+    .then((res) =>{});
+  };
+
+// updating slots
+
+  useEffect(() => {
+    (async () => {
+      try {
+        const data = await axios.get("http://localhost:3200/api/slots");
+        const response = await data.data.data;
+
+        props.slots.map((p) => {
+          const check = response.some((e) => e.Date === p.date);
+          if (!check) {
+            axios
+              .post("http://localhost:3200/api/slots", { Date: p.date })
+              .then((res) => {});
+          } else {
+            axios
+              .get(`http://localhost:3200/api/slots/${p.date}`)
+              .then((res) => {
+                let [resp] = res.data.data;
+                if (resp.slot_1) {
+                  props.updateSlot(resp.Date, "slot_1", resp.slot_1);
+                }
+                if (resp.slot_2) {
+                  props.updateSlot(resp.Date, "slot_2", resp.slot_2);
+                }
+                if (resp.slot_3) {
+                  props.updateSlot(resp.Date, "slot_3", resp.slot_3);
+                }
+                if (resp.slot_4) {
+                  props.updateSlot(resp.Date, "slot_4", resp.slot_4);
+                }
+              
+              });
+          }
+        });
+      } catch (err) {
+        console.log(err);
+      }
+    })();
+  }, []);
+
+
+// this handles the hover effect on the slt element
 
   const con = (es) => {
     try {
@@ -16,6 +83,8 @@ export const Slot = (props) => {
       return lists;
     } catch (e) {}
   };
+
+
   /* This Handles The DragOver events the Slot */
 
   const handleOver = (e) => {
@@ -24,6 +93,7 @@ export const Slot = (props) => {
       e.target.classList.add("captured");
     }
   };
+
   /* This Handles The DragOver events the Slot */
 
   const handleRemove = (e) => {
@@ -36,19 +106,22 @@ export const Slot = (props) => {
     let id = cus_.getAttribute("userId");
     props.addSlot(+e.target.getAttribute("ind"), e.target.id, id);
     props.removeCustomer(id);
+    slotStore(e.target.getAttribute("date"), e.target.id, id);
+    settledStore(id);
+    clearCustomer(id)
   };
 
   const HandleContent = (e) => {
-    if(e.target.innerHTML!==''){
-      e.target.classList.add('Show_content')
+    if (e.target.innerHTML !== "") {
+      e.target.classList.add("Show_content");
     }
   };
   const LeaveContent = (e) => {
-    if(e.target.innerHTML!==''){
-      e.target.classList.remove('Show_content')
+    if (e.target.innerHTML !== "") {
+      e.target.classList.remove("Show_content");
     }
   };
-  
+
   return (
     <div className="Slot_container">
       <table id="Slot_table">
@@ -67,52 +140,56 @@ export const Slot = (props) => {
               <tr key={i}>
                 <td>{e.date}</td>
                 <td
-                  id="s1"
+                  id="slot_1"
                   ind={i}
-                  onMouseLeave={ LeaveContent }
+                  date={e.date}
+                  onMouseLeave={LeaveContent}
                   onMouseOver={HandleContent}
                   onDragOverCapture={handleOver}
                   onDrop={HandleDroped}
                   onDragLeave={handleRemove}
-                  hi={con(e.s1)}
+                  hi={con(e.slot_1)}
                 >
-                  {e.s1}
+                  {e.slot_1}
                 </td>
                 <td
-                  id="s2"
+                  id="slot_2"
                   ind={i}
-                  onMouseLeave={ LeaveContent }
+                  date={e.date}
+                  onMouseLeave={LeaveContent}
                   onMouseOver={HandleContent}
                   onDragOverCapture={handleOver}
                   onDrop={HandleDroped}
                   onDragLeave={handleRemove}
-                  hi={con(e.s2)}
+                  hi={con(e.slot_2)}
                 >
-                  {e.s2}
+                  {e.slot_2}
                 </td>
                 <td
-                  id="s3"
+                  id="slot_3"
                   ind={i}
-                  onMouseLeave={ LeaveContent }
+                  date={e.date}
+                  onMouseLeave={LeaveContent}
                   onMouseOver={HandleContent}
                   onDragOverCapture={handleOver}
                   onDrop={HandleDroped}
                   onDragLeave={handleRemove}
-                  hi={con(e.s3)}
+                  hi={con(e.slot_3)}
                 >
-                  {e.s3}
+                  {e.slot_3}
                 </td>
                 <td
-                  id="s4"
+                  id="slot_4"
                   ind={i}
-                  onMouseLeave={ LeaveContent }
+                  date={e.date}
+                  onMouseLeave={LeaveContent}
                   onMouseOver={HandleContent}
                   onDragOverCapture={handleOver}
                   onDrop={HandleDroped}
                   onDragLeave={handleRemove}
-                  hi={con(e.s4)}
+                  hi={con(e.slot_4)}
                 >
-                  {e.s4}
+                  {e.slot_4}
                 </td>
               </tr>
             );
@@ -129,11 +206,14 @@ export const Slot = (props) => {
   );
 };
 
+
+
 // this sets the slot props for getting data from the store
 const mapStateToProps = (state) => {
   return {
     slots: state.slot,
     reserve: state.reserve,
+    customer: state.customer,
   };
 };
 
@@ -147,6 +227,10 @@ const setter = (dispatch) => {
     addSlot: (attr, id, Id) => {
       dispatch({ type: Action.slot, payload: { attr, id, Id } });
     },
+    updateSlot: (date, slotId, Slot) => {
+      dispatch({ type: Action.dataBase, payload: { date, slotId, Slot } });
+    },
   };
 };
+
 export default connect(mapStateToProps, setter)(Slot);
