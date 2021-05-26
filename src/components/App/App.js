@@ -5,6 +5,7 @@ import { Main } from "../Main/Main";
 import axios from "axios";
 import Bigdata from "../MOCK_DATA.json";
 import { Action } from "../Actions";
+import {api} from '../api';
 
 function App(props) {
   /* calling fectching customers data from the server  */
@@ -14,7 +15,7 @@ function App(props) {
   useEffect(() => {
     (async () => {
       try {
-        const data = await axios.get("http://localhost:3200/api/settled");
+        const data = await axios.get(`${api.endPoint}settled`);
         const response = await data.data.data;
         props.ReservedCustomer(response);
       } catch (err) {

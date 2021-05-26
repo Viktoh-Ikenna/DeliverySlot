@@ -4,6 +4,7 @@ import { connect } from "react-redux";
 import { HiOutlineArrowNarrowLeft } from "react-icons/hi";
 import { Action } from "../Actions";
 import axios from "axios";
+import {api} from '../api';
 
 export const Slot = (props) => {
 
@@ -12,21 +13,21 @@ export const Slot = (props) => {
   const settledStore = (data) => {
     const [filtered] = props.customer.filter((e) => e["Cus_Id"] === data);
     axios
-      .post("http://localhost:3200/api/settled", filtered)
+      .post(`${api.endPoint}settled`, filtered)
       .then(() => {});
 
   };
 
   const slotStore = (date, slot, data) => {
     axios
-      .patch(`http://localhost:3200/api/slots/${date}`, { [slot]: data })
+      .patch(`${api.endPoint}slots/${date}`, { [slot]: data })
       .then((res) =>{});
   };
 
   const clearCustomer = (data) => {
     const [filtered] = props.customer.filter((e) => e["Cus_Id"] === data);
     axios
-    .delete(`http://localhost:3200/api/customers/${filtered._id}`)
+    .delete(`${api.endPoint}customers/${filtered._id}`)
     .then((res) =>{});
   };
 
@@ -35,18 +36,18 @@ export const Slot = (props) => {
   useEffect(() => {
     (async () => {
       try {
-        const data = await axios.get("http://localhost:3200/api/slots");
+        const data = await axios.get(`${api.endPoint}slots`);
         const response = await data.data.data;
 
         props.slots.map((p) => {
           const check = response.some((e) => e.Date === p.date);
           if (!check) {
             axios
-              .post("http://localhost:3200/api/slots", { Date: p.date })
+              .post(`${api.endPoint}slots`, { Date: p.date })
               .then((res) => {});
           } else {
             axios
-              .get(`http://localhost:3200/api/slots/${p.date}`)
+              .get(`${api.endPoint}slots/${p.date}`)
               .then((res) => {
                 let [resp] = res.data.data;
                 if (resp.slot_1) {

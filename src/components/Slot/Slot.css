@@ -11,6 +11,9 @@
 }
 #customers td {
   color: rgb(84, 87, 87);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
 }
 #Slot_table tr:nth-child(even) {
   background-color: #f2f2f2;
@@ -90,4 +93,12 @@
 }
 .captured {
   background-color: rgba(201, 201, 127, 0.712);
+}
+.restore{
+  position: relative;
+font-size: 10px;
+display: flex;
+justify-content: flex-end;
+align-items: flex-start;
+cursor: pointer;
 }

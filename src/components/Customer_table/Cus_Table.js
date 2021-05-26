@@ -7,6 +7,7 @@ import {
   HiOutlineArrowNarrowRight,
 } from "react-icons/hi";
 import { connect } from "react-redux";
+import {api} from '../api';
 
 
 export const CusTable = (props) => {
@@ -22,7 +23,7 @@ export const CusTable = (props) => {
   useEffect(() => {
     (async () => {
       try {
-        const data = await axios.get(`http://localhost:3200/api/customers?page=${page}&limit=8`);
+        const data = await axios.get(`${api.endPoint}customers?page=${page}&limit=8`);
         const response = await data.data;
         setTotal(response.TotalDb);
         props.Fetch(response.data);
@@ -48,6 +49,7 @@ export const CusTable = (props) => {
     setpage((prev) => {
       if (prev >= Math.ceil(total/ 8)) return prev;
       else {
+        props.Fetch([]);
         return prev + 1;
       }
     });
@@ -57,6 +59,7 @@ export const CusTable = (props) => {
       if (prev < 2) {
         return 1;
       } else {
+        props.Fetch([]);
         return prev - 1;
       }
     });
